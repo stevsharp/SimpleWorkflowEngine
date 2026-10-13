@@ -3,6 +3,15 @@ using SimpleWorkflowEngine.Orders.Steps;
 
 namespace SimpleWorkflowEngine.Factory;
 
+/// <summary>
+/// 
+/// </summary>
+/// <param name="validate"></param>
+/// <param name="checkInventory"></param>
+/// <param name="chargePayment"></param>
+/// <param name="sendConfirmation"></param>
+/// <param name="notifyBackorder"></param>
+/// <param name="handleDeclinedPayment"></param>
 public sealed class OrderWorkflowFactory(
     ValidateOrderStep validate,
     CheckInventoryStep checkInventory,
