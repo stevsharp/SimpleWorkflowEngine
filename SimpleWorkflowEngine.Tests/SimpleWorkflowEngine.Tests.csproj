@@ -19,7 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SimpleWorkflowEngine\SimpleWorkflowEngine.csproj" />
+    <ProjectReference Include="..\SimpleWorkflowEngine.Core\SimpleWorkflowEngine.Core.csproj" />
+    <ProjectReference Include="..\SimpleWorkflowEngine.Email\SimpleWorkflowEngine.Email.csproj" />
+    <ProjectReference Include="..\SimpleWorkflowEngine.Orders\SimpleWorkflowEngine.Orders.csproj" />
   </ItemGroup>
 
 </Project>

@@ -10,4 +10,11 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SimpleWorkflowEngine.Core\SimpleWorkflowEngine.Core.csproj" />
+    <ProjectReference Include="..\SimpleWorkflowEngine.CustomerFeature\SimpleWorkflowEngine.CustomerFeature.csproj" />
+    <ProjectReference Include="..\SimpleWorkflowEngine.Email\SimpleWorkflowEngine.Email.csproj" />
+    <ProjectReference Include="..\SimpleWorkflowEngine.Orders\SimpleWorkflowEngine.Orders.csproj" />
+  </ItemGroup>
+
 </Project>

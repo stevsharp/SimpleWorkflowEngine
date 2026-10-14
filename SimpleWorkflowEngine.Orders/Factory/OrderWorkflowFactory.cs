@@ -4,14 +4,23 @@ using SimpleWorkflowEngine.Orders.Steps;
 namespace SimpleWorkflowEngine.Factory;
 
 /// <summary>
-/// 
+/// Builds the order-processing <see cref="WorkflowEngine{TContext}"/>.
+/// Steps are resolved from DI and composed into the graph below:
+/// <code>
+/// ValidateOrder -> CheckInventory
+///                    ├─ IsBackorder    -> NotifyBackorder
+///                    └─ otherwise      -> ChargePayment
+///                                           ├─ PaymentDeclined -> HandleDeclinedPayment
+///                                           └─ otherwise       -> SendConfirmation
+/// </code>
+/// A validation failure in <c>ValidateOrder</c> terminates the run with <see cref="WorkflowStatus.Failed"/>.
 /// </summary>
-/// <param name="validate"></param>
-/// <param name="checkInventory"></param>
-/// <param name="chargePayment"></param>
-/// <param name="sendConfirmation"></param>
-/// <param name="notifyBackorder"></param>
-/// <param name="handleDeclinedPayment"></param>
+/// <param name="validate">Entry step; rejects empty/zero-amount/missing-email orders.</param>
+/// <param name="checkInventory">Sets <c>IsBackorder</c> based on item stock availability.</param>
+/// <param name="chargePayment">Attempts to charge the order total; sets <c>PaymentDeclined</c>.</param>
+/// <param name="sendConfirmation">Happy-path terminal step for successful orders.</param>
+/// <param name="notifyBackorder">Terminal step when any item is out of stock.</param>
+/// <param name="handleDeclinedPayment">Terminal step when payment is declined.</param>
 public sealed class OrderWorkflowFactory(
     ValidateOrderStep validate,
     CheckInventoryStep checkInventory,
@@ -27,6 +36,10 @@ public sealed class OrderWorkflowFactory(
     private readonly NotifyBackorderStep _notifyBackorder = notifyBackorder;
     private readonly HandleDeclinedPaymentStep _handleDeclinedPayment = handleDeclinedPayment;
 
+    /// <summary>
+    /// Composes a new <see cref="WorkflowEngine{OrderContext}"/> wired with the order steps and routes.
+    /// Call once per host; the returned engine is reusable across <c>RunAsync</c> invocations.
+    /// </summary>
     public WorkflowEngine<OrderContext> Build() =>
         new WorkflowEngine<OrderContext>()
             .AddStep(_validate, nextStep: _checkInventory.Name)
