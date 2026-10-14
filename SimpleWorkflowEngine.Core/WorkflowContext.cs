@@ -16,29 +16,5 @@ public abstract class WorkflowContext
     public DateTime? CompletedAt { get; set; }
 }
 
-public class WorkflowRun
-{
-    public string Id { get; set; } = null!;
-    public string WorkflowType { get; set; } = null!;
-    public string Status { get; set; } = "NotStarted";
-    public string? CurrentStep { get; set; }
-    public List<string> ExecutedSteps { get; set; } = new();
-    public List<string> Errors { get; set; } = new();
-    public string ContextJson { get; set; } = null!;
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-    public DateTime? CompletedAt { get; set; }
-}
-
-public class WorkflowStepLog
-{
-    public string WorkflowRunId { get; set; } = null!;
-    public string StepName { get; set; } = null!;
-    public string Status { get; set; } = null!;
-    public string? ErrorMessage { get; set; }
-    public long DurationMs { get; set; }
-    public DateTime ExecutedAt { get; set; } = DateTime.UtcNow;
-}
-
 
 
